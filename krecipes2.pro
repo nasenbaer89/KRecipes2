@@ -4,5 +4,4 @@ SOURCES += \
 OTHER_FILES += \
     src/qml/main.qml
  
-QT += quick declarative
- 
+QT += quick
