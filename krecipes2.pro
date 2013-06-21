@@ -1,7 +1,11 @@
+HEADERS       = src/tableeditor.h
+
 SOURCES += \
-    src/main.cpp
+    src/main.cpp \
+    src/tableeditor.cpp
  
-OTHER_FILES += \
-    src/qml/main.qml
+#OTHER_FILES += \
+#    ../src/qml/main.qml
  
-QT += quick
+QT += sql widgets
+ #QT += quick

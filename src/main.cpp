@@ -1,17 +1,19 @@
- 
-#include <QGuiApplication>
+#include <QApplication>
+#include <QSqlDatabase>
 #include <QtQuick/QQuickView>
 #include <QtQml/QQmlEngine>
-
+#include "tableeditor.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv, 5);
- 
-    QQuickView viewer;
-    viewer.setSource(QUrl("src/qml/main.qml"));
-    viewer.show();
+    QApplication app(argc, argv);
 
-    QObject::connect(viewer.engine(), SIGNAL(quit()), qApp, SLOT(quit()));
+    TableEditor editor;
+    editor.show();
+//     QQuickView viewer;
+//     viewer.setSource(QUrl("../src/qml/main.qml"));
+//     viewer.show();
+// 
+//     QObject::connect(viewer.engine(), SIGNAL(quit()), qApp, SLOT(quit()));
     return app.exec();
 }
