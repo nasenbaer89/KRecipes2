@@ -2,7 +2,7 @@
 #include <QSqlDatabase>
 #include <QtQuick/QQuickView>
 #include <QtQml/QQmlEngine>
-#include "tableeditor.h"
+#include "krecipes2.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
