@@ -11,20 +11,8 @@ TableEditor::TableEditor(QWidget* parent): QWidget(parent)
 {
     qDebug();
     RecipeDB* db = RecipeDB::createDatabase("SQLite");
-    db->connect(true, true);
+    db->connect();
 
-//     if (db.tables().isEmpty())
-//         create_tables();
-//     else {
-//         db_version = getDbVersion();
-//         db_version_latest = 1;
-//         if (db_version < db_version_latest) {
-//             portOldDatabse();
-//         }
-//     }
-//     db_version = getDbVersion();
-    //create_tables();
-// 
 //     query.exec("create table images (locationid int, file varchar(20))");
 //     query.exec("insert into images values(0, 'images/oslo.png')");
 //     query.exec("insert into images values(1, 'images/brisbane.png')");
@@ -51,19 +39,3 @@ TableEditor::TableEditor(QWidget* parent): QWidget(parent)
 
 //     setWindowTitle(tr("Cached Table"));
 }
-
-float TableEditor::getDbVersion()
-{
-    QSqlQuery dbVersion;
-    dbVersion.exec("SELECT ver FROM db_info");
-    if ( dbVersion.isActive() && dbVersion.isSelect() && dbVersion.next() ) {
-        qDebug()<<" dbVersion.value( 0 ).toString().toFloat() :"<<dbVersion.value( 0 ).toString().toFloat();
-        // There should be only one (or none for old DB) element, so go to first
-        return ( dbVersion.value( 0 ).toString().toDouble() ); 
-    }
-    else {
-        qDebug()<<" old version";
-        return ( 0.2 ); // if table is empty, assume oldest (0.2), and port
-    }
-}
-

@@ -15,6 +15,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 #define DEFAULT_DB_NAME "Krecipes"
 
@@ -29,9 +30,10 @@ public:
     virtual ~RecipeDB();
     
     static RecipeDB* createDatabase( const QString &dbType, const QString &file = QString() ); //FIXME
-    RecipeDB::Error connect( bool create_db, bool create_tables, const QString &host = QString(), const QString &user = QString(), const QString &pass = QString(), const QString &DBName = DEFAULT_DB_NAME, int port = 0
- ); //FIXME what are create_db, create_tables?
-    virtual void createTable(const QString &tableName) = 0;
+    RecipeDB::Error connect(const QString &host = QString(), const QString &user = QString(),
+                            const QString &pass = QString(), const QString &DBName = DEFAULT_DB_NAME, int port = 0 );
+    //FIXME what are create_db, create_tables?
+    virtual void createTable(const QString &tableName = "all") = 0;
     
     virtual int maxAuthorNameLength() const = 0;
     virtual int maxCategoryNameLength() const = 0;
@@ -43,7 +45,8 @@ public:
     virtual int maxPropertyNameLength() const = 0;
     virtual int maxYieldTypeLength() const = 0;
     
-    float databaseVersion();
+    float databaseVersion();      //FIXME virtual??
+    RecipeDB::Error checkIntegrity();
 
     
 protected:

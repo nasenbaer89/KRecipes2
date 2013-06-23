@@ -10,5 +10,6 @@ add_executable(krecipes2 ${krecipes2_SRCS})
 # Find the QtWidgets library
 find_package(Qt5Widgets)
 qt5_use_modules(krecipes2 Widgets Sql)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 target_link_libraries(krecipes2 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY})
 #install(TARGETS krecipes2 RUNTIME DESTINATION bin)

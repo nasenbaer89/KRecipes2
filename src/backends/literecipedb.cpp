@@ -12,6 +12,7 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QDebug>
+#include <QStringList>
 
 #include "literecipedb.h"
 
@@ -20,59 +21,118 @@ LiteRecipeDB::LiteRecipeDB( const QString &_dbFile ) : RecipeDB()
     qDebug();
 }
 
-void LiteRecipeDB::createTable(const QString &tablename)
+void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes are created
 {
+    qDebug()<<" tableName :"<<tableName;
+    QStringList commands;
     QSqlQuery query;
-    if ((tablename == "db_info") || (tablename == "all")) {
-        query.exec("create table db_info (ver FLOAT NOT NULL,generated_by varchar(200) default NULL)");
-        if (query.lastError().type() != QSqlError::NoError)
-            qDebug() << query.lastError();
-        else {
-            query.exec("insert into db_info values(1, 'krecipes2_master')");
-            if (query.lastError().type() != QSqlError::NoError)
-                qDebug() << query.lastError();
-        }
+
+    if ((tableName == "authors") || (tableName == "all")) {
+        commands << QString("create table authors (id int NOT NULL primary key, name varchar(%1) default NULL)")
+                            .arg( maxAuthorNameLength() );
     }
-    if ((tablename == "authors") || (tablename == "all")) {
-        //query.exec("drop table authors");
-        query.exec("create table authors (id int NOT NULL primary key, name varchar(50) default NULL)");
-        if (query.lastError().type() != QSqlError::NoError)
-            qDebug() << query.lastError();
+    if ((tableName == "categories") || (tableName == "all")) {
+        commands << QString("create table categories (id int NOT NULL primary key, name varchar(%1) default NULL,"
+                            " parent_id int NOT NULL default -1)").arg( maxCategoryNameLength() );
+        commands << "CREATE index parent_id_index ON categories(parent_id);"; //FIXME
     }
-    if ((tablename == "categories") || (tablename == "all")) {
-        //query.exec("drop table categories");
-        query.exec("create table categories (id int NOT NULL primary key, name varchar(40) default NULL,"
-                   " parent_id int NOT NULL default -1)");
-        if (query.lastError().type() != QSqlError::NoError)
-            qDebug() << query.lastError();
+    if ((tableName == "db_info") || (tableName == "all")) {
+        commands << ("create table db_info (ver FLOAT NOT NULL,generated_by varchar(200) default NULL)");
+        commands << QString("insert into db_info values(%1, 'Krecipes2 %2')")
+                    .arg(latestDBVersion()).arg(krecipes_version());
     }
-    if ((tablename == "recipes") || (tablename == "all")) {
-        //query.exec("drop table recipes");
-        query.exec("create table recipes (id int not null primary key, title varchar(200), author_id int,"
-                   " category_id int, yield_amount float, yield_type_id int, instructions TEXT,"
-                   " photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP)");
-        if (query.lastError().type() != QSqlError::NoError)
-            qDebug() << query.lastError();
+    if ((tableName == "ingredients") || (tableName == "all")) {
+        commands << QString("create table ingredients (id int not null primary key, name varchar(%1));" )
+        .arg(maxIngredientNameLength());
     }
-    if (tablename == "recipes_copy") {
-        query.exec("create table recipes_copy(id int not null primary key, title varchar(200),"
-                   " author_id int,  yield_amount float, yield_type_id int,"
-                   " instructions TEXT, photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP)");
-        if (query.lastError().type() != QSqlError::NoError)
-            qDebug() << query.lastError();
+    if ((tableName == "ingredient_info") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE ingredient_info (ingredient_id INT, property_id INT, amount FLOAT, per_units INTEGER);";
     }
-    if ((tablename == "yield_types") || (tablename == "all")) {
-        query.exec("CREATE TABLE yield_types (id int NOT NULL primary key, name varchar(20))");
+    if ((tableName == "ingredient_groups") || (tableName == "all")) {//FIXME
+        commands << QString("CREATE TABLE ingredient_groups (id INT NOT NULL primary key, name varchar(%1));" )
+                            .arg( maxIngGroupNameLength() );
+    }
+    if ((tableName == "ingredient_list") || (tableName == "all")) { //FIXME what does this table do?
+        commands << "CREATE TABLE ingredient_list (id INT NOT NULL primary key, recipe_id INT, ingredient_id INT,"
+                    " amount FLOAT, amount_offset FLOAT, unit_id INT, order_index INT, group_id INT, substitute_for INT);"
+        << "CREATE index ridil_index ON ingredient_list(recipe_id);" // FIXME what are the indexes doing?
+        << "CREATE index iidil_index ON ingredient_list(ingredient_id);"
+        << "CREATE index gidil_index ON ingredient_list(group_id);";
+    }
+    if ((tableName == "ingredient_properties") || (tableName == "all")) { //FIXME
+        commands << QString("CREATE TABLE ingredient_properties (id INT NOT NULL primary key, name VARCHAR(%1),"
+                            " units VARCHAR(%2));").arg( maxPrepMethodNameLength() ).arg( maxUnitNameLength() );
+    }
+    if ((tableName == "ingredient_weights") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE ingredient_weights (id INT NOT NULL primary key, ingredient_id INT NOT NULL,"
+                    " amount FLOAT, unit_id INT, weight FLOAT, weight_unit_id INT, prep_method_id INT);"
+        << "CREATE index weight_wid_index ON ingredient_weights(weight_unit_id)"
+        << "CREATE index weight_pid_index ON ingredient_weights(prep_method_id)"
+        << "CREATE index weight_uid_index ON ingredient_weights(unit_id)"
+        << "CREATE index weight_iid_index ON ingredient_weights(ingredient_id)";
+    }
+    if ((tableName == "prep_methods") || (tableName == "all")) {
+        commands << QString("CREATE TABLE prep_methods (id INT NOT NULL primary key, name VARCHAR(%1));" )
+                            .arg( maxPrepMethodNameLength() );
+    }
+    if ((tableName == "prep_method_list") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE prep_method_list (ingredient_list_id INT NOT NULL, prep_method_id INT NOT NULL,"
+                    "order_index INTEGER );"
+        << "CREATE index iid_index ON prep_method_list(ingredient_list_id);"
+        << "CREATE index pid_index ON prep_method_list(prep_method_id);";
+    }
+    if ((tableName == "ratings") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE ratings (id INT NOT NULL primary key, recipe_id int(11) NOT NULL, comment TEXT,"
+                    " rater TEXT, created TIMESTAMP);";
+    }
+    if ((tableName == "rating_criteria") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE rating_criteria (id INT NOT NULL primary key, name TEXT);";
+    }
+    if ((tableName == "rating_criterion_list") || (tableName == "all")) { //FIXME
+        commands << "CREATE TABLE rating_criterion_list (rating_id INT NOT NULL, rating_criterion_id INT, stars FLOAT);";
+    }
+    if ((tableName == "recipes") || (tableName == "all")) {
+    commands << QString("create table recipes (id int not null primary key, title varchar(%1), author_id int,"
+                        " category_id int, yield_amount float, yield_type_id int, instructions TEXT,"
+                        " photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP);")
+                        .arg(maxRecipeTitleLength());
+    }
+    if (tableName == "recipes_copy") {
+        commands << QString("create table recipes_copy(id int not null primary key, title varchar(%1),"
+                            " author_id int,  yield_amount float, yield_type_id int, instructions TEXT,"
+                            " photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP)")
+                            .arg(maxRecipeTitleLength());
+    }
+    if ((tableName == "units") || (tableName == "all")) {
+        commands << QString("CREATE TABLE units (id INT NOT NULL primary key, name VARCHAR(%1), name_abbrev VARCHAR(%2),"
+                            " plural VARCHAR(%3), plural_abbrev VARCHAR(%4), type INT NOT NULL DEFAULT '0');" )
+           .arg( maxUnitNameLength() ).arg( maxUnitNameLength() ).arg( maxUnitNameLength() ).arg( maxUnitNameLength() );
+    }
+    if ((tableName == "units_conversion") || (tableName == "all")) {//FIXME
+        commands << "CREATE TABLE units_conversion (unit1_id INT, unit2_id INT, ratio FLOAT);";
+    }
+    if ((tableName == "unit_list") || (tableName == "all")) { //FIXME neccessar?
+        commands << "CREATE TABLE unit_list (ingredient_id INT, unit_id INT);";
+    }
+    if ((tableName == "yield_types") || (tableName == "all")) {
+        commands << QString("CREATE TABLE yield_types (id int NOT NULL primary key, name varchar(%1))")
+                            .arg( maxYieldTypeLength() );
+    }
+    // execute the queries
+    for ( QStringList::const_iterator it = commands.constBegin(); it != commands.constEnd(); ++it ) {
+        database->exec( *it );
+        if (database->lastError().type() != QSqlError::NoError)
+            qDebug() << " " << database->lastError();
     }
 }
 
 void LiteRecipeDB::portOldDatabases(float version)
 {
-    if ((qRound(version * 100)) == 96) //FIXME not very nice
+    qDebug() << "porting...";
+    if ((qRound(version * 100)) < 100) //FIXME not very nice
     {
-        QSqlQuery query;
+        QSqlQuery query(*database);
         createTable("recipes_copy");
-        
         query.exec("insert into recipes_copy select recipes.id, recipes.title, author_list.author_id,"
                    " recipes.yield_amount, recipes.yield_type_id, recipes.instructions, recipes.photo,"
                    " recipes.prep_time, recipes.ctime, recipes.mtime, recipes.atime"
@@ -102,6 +162,7 @@ void LiteRecipeDB::portOldDatabases(float version)
         query.exec("drop table db_info");
         createTable("db_info");
     }
+    qDebug() << "done.";
 }
 
 int LiteRecipeDB::maxAuthorNameLength() const

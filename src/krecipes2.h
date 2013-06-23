@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QDialogButtonBox>
-#include <QSqlDatabase> //FIXME doesn't belong here
+#include <QPushButton>
 
 class TableEditor : public QWidget
 {
@@ -16,12 +16,6 @@ private slots:
 
     
 private:
-    float getDbVersion();
-    float db_version;
-    float db_version_latest;
-    QSqlDatabase db;
-    
-    void portOldDatabse();
     
     QPushButton *createButton;
     QPushButton *quitButton;
