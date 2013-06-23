@@ -7,7 +7,7 @@
 #include "krecipes2.h"
 #include "backends/recipedb.h"
 
-TableEditor::TableEditor(QWidget* parent): QWidget(parent)
+Krecipes2::Krecipes2(QWidget* parent): QWidget(parent)
 {
     qDebug();
     RecipeDB* db = RecipeDB::createDatabase("SQLite");

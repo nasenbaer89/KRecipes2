@@ -8,8 +8,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    TableEditor editor;
-    editor.show();
+    Krecipes2 widget;
+    widget.show();
 //     QQuickView viewer;
 //     viewer.setSource(QUrl("../src/qml/main.qml"));
 //     viewer.show();

@@ -1,16 +1,16 @@
-#ifndef TABLEEDITOR_H
-#define TABLEEDITOR_H
+#ifndef KRECIPES2_H
+#define KRECIPES2_H_H
 
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
 
-class TableEditor : public QWidget
+class Krecipes2 : public QWidget
 {
     Q_OBJECT
     
 public:
-    explicit TableEditor(QWidget *parent = 0);
+    explicit Krecipes2(QWidget *parent = 0);
     
 private slots:
 
