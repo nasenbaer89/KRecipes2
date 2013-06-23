@@ -210,6 +210,35 @@ int LiteRecipeDB::maxYieldTypeLength() const
     return 20;
 }
 
+// void LiteRecipeDB::storePhoto( int recipeID, const QByteArray &data ) //TODO
+// {
+//     QSqlQuery query( QString(), *database);
+// 
+//     query.prepare( "UPDATE recipes SET photo=\"?\",ctime=ctime,atime=atime,mtime=mtime WHERE id=" + QString::number( recipeID ) );
+//     query.addBindValue( KCodecs::base64Encode( data ) );
+//     query.exec();
+// }
+
+// QStringList LiteRecipeDB::backupCommand() const //TODO
+// {
+//     KConfigGroup config( KGlobal::config(), "Server" );
+//     QString binary = config.readEntry( "SQLitePath", "sqlite3" );
+// 
+//     QStringList command;
+//     command<<binary<<database->databaseName()<<".dump";
+//     return command;
+// }
+// 
+// QStringList LiteRecipeDB::restoreCommand() const //TODO
+// {
+//     KConfigGroup config( KGlobal::config(), "Server" );
+//     QString binary = config.readEntry( "SQLitePath", "sqlite3" );
+// 
+//     QStringList command;
+//     command<<binary<<database->databaseName();
+//     return command;
+// }
+
 LiteRecipeDB::~LiteRecipeDB()
 {
 }
