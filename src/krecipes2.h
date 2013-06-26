@@ -4,8 +4,9 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <KDE/KXmlGuiWindow>
 
-class Krecipes2 : public QWidget
+class Krecipes2 : public KXmlGuiWindow
 {
     Q_OBJECT
     
