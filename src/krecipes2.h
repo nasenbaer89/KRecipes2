@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QPushButton>
+#include <QAction>
 #include <KDE/KXmlGuiWindow>
 
 class Krecipes2 : public KXmlGuiWindow
@@ -18,6 +19,7 @@ private slots:
     
 private:
     
+    void setupActions();
     QPushButton *createButton;
     QPushButton *quitButton;
     QDialogButtonBox *buttonBox;
