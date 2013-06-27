@@ -5,7 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake
                       ${CMAKE_MODULE_PATH}
                       /home/stefanie/Programmieren/KDE/KF5/inst/share/ECM-0.0.8/find-modules #FIXME
                       )
-set(CMAKE_INSTALL_PREFIX ../inst)
+# set(CMAKE_INSTALL_PREFIX ../inst)
 
 set(krecipes2_SRCS src/krecipes2.cpp src/main.cpp src/backends/recipedb.cpp src/backends/literecipedb.cpp)
 set(CMAKE_AUTOMOC ON)
@@ -33,5 +33,5 @@ target_link_libraries(krecipes2 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
                                 ${KF5_LIBRARIES}
                                 )
 
-install(TARGETS krecipes2 RUNTIME DESTINATION bin )
+# install(TARGETS krecipes2 RUNTIME DESTINATION bin )
 install(FILES src/krecipes2ui.rc DESTINATION  $ENV{XDG_DATA_HOME})

@@ -15,11 +15,13 @@ public:
     explicit Krecipes2(QWidget *parent = 0);
     
 private slots:
-
+    void showCurrentRecipes(); //FIXME from krecipesview
     
 private:
     
     void setupActions();
+    QAction *showRecipeAction;
+    
     QPushButton *createButton;
     QPushButton *quitButton;
     QDialogButtonBox *buttonBox;

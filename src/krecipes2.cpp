@@ -40,14 +40,21 @@ void Krecipes2::setupActions()
 {
     qDebug() << "test2";
 
-//     showRecipeAction = new QAction( this );
-//     showRecipeAction->setText( i18n( "Show Recipe(s)" ) );
-//     showRecipeAction->setIcon( QIcon::fromTheme( "system-search" ) );
-//     showRecipeAction->setShortcut( Qt::CTRL + Qt::Key_L );
-//     actionCollection()->addAction( "show_recipe_action", showRecipeAction );
-//     connect( showRecipeAction, SIGNAL(triggered(bool)), this, SLOT( showCurrentRecipes() ) );
+    showRecipeAction = new QAction( this );
+    showRecipeAction->setText( i18n( "Show Recipe(s)" ) );
+    showRecipeAction->setIcon( QIcon::fromTheme( "system-search" ) );
+    showRecipeAction->setShortcut( Qt::CTRL + Qt::Key_L );
+    actionCollection()->addAction( "show_recipe_action", showRecipeAction );
+    connect( showRecipeAction, SIGNAL(triggered(bool)), this, SLOT( showCurrentRecipes() ) );
+    
 //     
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
 //     
     createGUI();
 }
+
+void Krecipes2::showCurrentRecipes()
+{
+    qDebug() << "show recipe";
+}
+
