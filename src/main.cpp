@@ -36,3 +36,4 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 //     QObject::connect(viewer.engine(), SIGNAL(quit()), qApp, SLOT(quit()));
     return app.exec();
 }
+

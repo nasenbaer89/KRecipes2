@@ -9,10 +9,18 @@
 
 #include "krecipes2.h"
 #include "backends/recipedb.h"
+#include "krecipes2view.h"
 
 Krecipes2::Krecipes2(QWidget *parent) : KXmlGuiWindow(parent)
 {
-    qDebug() << "test";
+    m_view = new Krecipes2View( this );
+    setObjectName( "Krecipes2" );
+    // accept dnd
+    setAcceptDrops( true );
+
+    // tell the KMainWindow that this is indeed the main widget
+    setCentralWidget( m_view );
+    
     setupActions();
 //     RecipeDB* db = RecipeDB::createDatabase("SQLite");
 //     db->connect();
@@ -46,6 +54,7 @@ void Krecipes2::setupActions()
     showRecipeAction->setShortcut( Qt::CTRL + Qt::Key_L );
     actionCollection()->addAction( "show_recipe_action", showRecipeAction );
     connect( showRecipeAction, SIGNAL(triggered(bool)), this, SLOT( showCurrentRecipes() ) );
+    qApp->quitOnLastWindowClosed();
     
 //     
     KStandardAction::quit(qApp, SLOT(closeAllWindows()), actionCollection());
@@ -56,5 +65,10 @@ void Krecipes2::setupActions()
 void Krecipes2::showCurrentRecipes()
 {
     qDebug() << "show recipe";
+}
+
+Krecipes2::~Krecipes2()
+{
+    qDebug() << "good bye";
 }
 

@@ -6,16 +6,20 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake
                       /home/stefanie/Programmieren/KDE/KF5/inst/share/ECM-0.0.8/find-modules #FIXME
                       )
 # set(CMAKE_INSTALL_PREFIX ../inst)
-
-set(krecipes2_SRCS src/krecipes2.cpp src/main.cpp src/backends/recipedb.cpp src/backends/literecipedb.cpp)
 set(CMAKE_AUTOMOC ON)
-
-add_executable(krecipes2 ${krecipes2_SRCS})
 find_package(KF5 REQUIRED)
 find_package(Qt5Widgets)
+qt5_wrap_ui(krecipes2view_ui src/krecipes2view.ui)
+
+set(krecipes2_SRCS src/krecipes2.cpp src/main.cpp src/backends/recipedb.cpp src/backends/literecipedb.cpp
+        src/krecipes2view.cpp 
+        )
+
+add_executable(krecipes2 ${krecipes2_SRCS} ${krecipes2view_ui})
 qt5_use_modules(krecipes2 Widgets Sql)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 
 set(KF5_INCLUDE_DIRS /home/stefanie/Programmieren/KDE/KF5/inst/include)
 include_directories(${KF5_INCLUDE_DIRS} ${QT_INCLUDES} ${CMAKE_CURRENT_BINARY_DIR})

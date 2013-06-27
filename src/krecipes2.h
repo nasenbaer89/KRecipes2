@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QAction>
 #include <KDE/KXmlGuiWindow>
+#include "krecipes2view.h"
 
 class Krecipes2 : public KXmlGuiWindow
 {
@@ -13,11 +14,13 @@ class Krecipes2 : public KXmlGuiWindow
     
 public:
     explicit Krecipes2(QWidget *parent = 0);
+    ~Krecipes2();
     
 private slots:
     void showCurrentRecipes(); //FIXME from krecipesview
     
 private:
+    Krecipes2View *m_view;
     
     void setupActions();
     QAction *showRecipeAction;
