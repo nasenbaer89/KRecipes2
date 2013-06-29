@@ -4,7 +4,7 @@
 
 #include "recipelistmodel.h"
 
-RecipeListModel::RecipeListModel(QObject *parent):QAbstractItemModel(parent)
+RecipeListModel::RecipeListModel(QObject *parent):QAbstractListModel(parent)
 {
     cols = COLS;
     rows = 5;

@@ -2,9 +2,9 @@
 #define RECIPELISTMODEL_H
 
 #include <tuple>
-#include <../../home/stefanie/Programmieren/Qt/Qt5/qt5-dev/qtbase/include/QtCore/qabstractitemmodel.h>
+#include <QAbstractListModel>
 
-class RecipeListModel: public QAbstractItemModel
+class RecipeListModel: public QAbstractListModel
 {
     Q_OBJECT
     
