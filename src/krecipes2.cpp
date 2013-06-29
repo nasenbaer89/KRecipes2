@@ -46,7 +46,7 @@ Krecipes2::Krecipes2(QWidget *parent) : KXmlGuiWindow(parent)
 
 void Krecipes2::setupActions()
 {
-    qDebug() << "test2";
+    qDebug();
 
     showRecipeAction = new QAction( this );
     showRecipeAction->setText( i18n( "Show Recipe(s)" ) );

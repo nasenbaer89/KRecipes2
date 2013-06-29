@@ -13,6 +13,7 @@
 #include <QSqlError>
 #include <QDebug>
 #include <QStringList>
+#include <tuple>
 
 #include "literecipedb.h"
 
@@ -126,8 +127,29 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
 }
 
-void LiteRecipeDB::portOldDatabases(float version)
+std::vector< std::tuple<int, QString, int> > LiteRecipeDB::getCategories()
 {
+    QString command = "SELECT id, name, parent_id FROM categories";
+    QSqlQuery query(command, *database);
+    if (query.lastError().type() != QSqlError::NoError) {
+        qDebug() << query.lastError();
+        return std::vector< std::tuple<int, QString, int> >();
+    }
+    std::vector< std::tuple<int, QString, int> > category_list;
+    if (query.isActive() && query.isSelect())
+    {
+        while(query.next())
+        {
+            category_list.push_back(std::make_tuple<int, QString, int>(query.value(0).toInt(),
+                                                                       query.value(1).toString(),
+                                                                       query.value(2).toInt()));
+        }
+    }
+    return category_list;
+}
+
+void LiteRecipeDB::portOldDatabases(float version)
+{//TODO switch(), make version integer
     qDebug() << "porting...";
     if ((qRound(version * 100)) < 100) //FIXME not very nice
     {

@@ -13,6 +13,7 @@
 #ifndef LITERECIPEDB_H
 #define LITERECIPEDB_H 
 
+#include <tuple>
 #include "recipedb.h"
 
 #define SQLITE_DRIVER "QSQLITE"
@@ -27,6 +28,8 @@ public:
     
     virtual void createTable(const QString &tableName = "all");
 
+    virtual std::vector< std::tuple<int, QString, int> > getCategories();
+    
     virtual int maxAuthorNameLength() const;
     virtual int maxCategoryNameLength() const;
     virtual int maxIngredientNameLength() const;

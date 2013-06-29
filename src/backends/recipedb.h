@@ -16,6 +16,7 @@
 #include <QObject>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <tuple>
 
 #define DEFAULT_DB_NAME "Krecipes"
 
@@ -48,6 +49,7 @@ public:
     float databaseVersion();      //FIXME virtual??
     RecipeDB::Error checkIntegrity();
 
+    virtual std::vector< std::tuple<int, QString, int> > getCategories() = 0;
     
 protected:
     double latestDBVersion() const;

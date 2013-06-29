@@ -4,6 +4,8 @@
 #include <QDebug>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
+#include <QString>
 #include <QStringList>
 #include <iostream>
 #include <QMessageBox>
@@ -115,13 +117,14 @@ QString RecipeDB::krecipes_version() const
 
 }
 
-float RecipeDB::databaseVersion()
+float RecipeDB::databaseVersion() //FIXME this should go into literecipedb?
 {
     qDebug();
     QString command = "SELECT ver FROM db_info";
     QSqlQuery dbVersion( command, *database);
-    qDebug() << "dbVersion.isActive() :" << dbVersion.isActive()<<" database :"<<database;
-    qDebug() << "dbVersion.isSelect() :" <<dbVersion.isSelect();
+    if (dbVersion.lastError().type() != QSqlError::NoError) {
+            qDebug() << dbVersion.lastError();
+    }
     if ( dbVersion.isActive() && dbVersion.isSelect() && dbVersion.next() ) {
         qDebug() << "dbVersion.value(0).toString().toDouble() :"<<dbVersion.value( 0 ).toString().toDouble();
         return ( dbVersion.value(0).toString().toDouble() ); // There should be only one (or none for old DB) element, so go to first
@@ -197,3 +200,5 @@ RecipeDB::Error RecipeDB::checkIntegrity()
         return FixDbFailed;
     return NoError;
 }
+
+
