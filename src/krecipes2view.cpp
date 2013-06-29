@@ -17,9 +17,8 @@ Krecipes2View::Krecipes2View(QWidget *parent)
     
     RecipeDB* db = RecipeDB::createDatabase("SQLite");
     db->connect();
-    std::vector< std::tuple<int, QString, int> > category_list = db->getCategories();
     
-    RecipeListModel *model = new RecipeListModel(this);
+    RecipeListModel *model = new RecipeListModel(db, this);
     ui->treeView->setModel(model);
 //     ui->treeView->setHeaderLabel(i18n("Recipe"));
 //     for (auto iter = category_list.begin(); iter != category_list.end(); ++iter)

@@ -1,54 +1,47 @@
-/*
- *
- */
-
+#include <klocalizedstring.h>
 #include "recipelistmodel.h"
 
-RecipeListModel::RecipeListModel(QObject *parent):QAbstractListModel(parent)
+RecipeListModel::RecipeListModel(RecipeDB* db, QObject *parent):QAbstractListModel(parent)
 {
-    cols = COLS;
-    rows = 5;
+    category_list = db->getCategories();
+    rows = category_list.size();
 }
 
 RecipeListModel::~RecipeListModel()
 {
-
 }
 
-QVariant RecipeListModel::data(const QModelIndex& index, int role)
+QVariant RecipeListModel::data(const QModelIndex& index, int role) const
 {
-    if(index.row() < 0 || index.row() >= rows || index.column() < 0 || index.column() >= cols)
-        return QVariant();
     switch(role)
     {
     case Qt::DisplayRole:
-        switch(index.row())
-        {
-        case 0:
-            return "a";
-        case 1:
-            return "b";
-        case 2:
-            return "c";
-        case 3:
-            return "d";
-        case 4:
-            return "e";
-        }
+        return std::get<1>(category_list[index.row()]);
         break;
     case Qt::TextAlignmentRole:
-        return Qt::AlignRight + Qt::AlignVCenter;
+        return Qt::AlignLeft + Qt::AlignVCenter;
     }
     return QVariant();
 }
 
-int RecipeListModel::columnCount(const QModelIndex& parent)
-{
-    Q_UNUSED(parent);
-    return cols;
-}
+QVariant RecipeListModel::headerData(int section, Qt::Orientation orientation, int role) const
+ {
+    if (role != Qt::DisplayRole)
+        return QVariant();
 
-int RecipeListModel::rowCount(const QModelIndex& parent)
+    if (orientation == Qt::Horizontal)
+    {
+        return i18n("Recipe");
+    }
+    if (orientation == Qt::Vertical)
+    {
+        return " ";
+    }
+    return QVariant();
+ }
+
+
+int RecipeListModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
     return rows;
@@ -60,12 +53,12 @@ Qt::ItemFlags RecipeListModel::flags(const QModelIndex &index) const
     return Qt::ItemIsSelectable |  Qt::ItemIsEditable | Qt::ItemIsEnabled ;
 }
 
-QModelIndex RecipeListModel::parent(const QModelIndex& child)
-{
-
-}
-
-QModelIndex RecipeListModel::index(int row, int column, const QModelIndex& parent)
-{
-
-}
+// QModelIndex RecipeListModel::parent(const QModelIndex& child)
+// {
+// 
+// }
+// 
+// QModelIndex RecipeListModel::index(int row, int column, const QModelIndex& parent)
+// {
+// 
+// }
