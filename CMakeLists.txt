@@ -11,7 +11,7 @@ find_package(KF5 REQUIRED)
 find_package(Qt5Widgets)
 qt5_wrap_ui(krecipes2view_ui src/krecipes2view.ui)
 
-set(krecipes2_SRCS src/krecipes2.cpp src/main.cpp src/backends/recipedb.cpp src/backends/literecipedb.cpp
+set(krecipes2_SRCS src/categoryitem.cpp src/krecipes2.cpp src/main.cpp src/backends/recipedb.cpp src/backends/literecipedb.cpp
         src/recipelistmodel.cpp src/krecipes2view.cpp
         )
 

@@ -2,28 +2,30 @@
 #define RECIPELISTMODEL_H
 
 #include <tuple>
-#include <QAbstractListModel>
+#include <QAbstractItemModel>
 #include "backends/recipedb.h"
+#include "categoryitem.h"
 
-class RecipeListModel: public QAbstractListModel
+class RecipeListModel: public QAbstractItemModel
 {
     Q_OBJECT
     
 public:
     explicit RecipeListModel(RecipeDB* db, QObject *parent = 0);
-    
     ~RecipeListModel();
+    
     QVariant data(const QModelIndex& index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
-//     int columnCount(const QModelIndex& parent) const;
-    int rowCount(const QModelIndex& parent) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+    int rowCount(const QModelIndex& parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
     Qt::ItemFlags flags(const QModelIndex &index) const;
-//     QModelIndex parent(const QModelIndex& child);
-//     QModelIndex index(int row, int column, const QModelIndex& parent);
+    QModelIndex index(int row, int column = 0, const QModelIndex& parent = QModelIndex()) const;
+    QModelIndex parent(const QModelIndex& index) const;
     
 private:
     std::vector< std::tuple<int, QString, int> > category_list;
-    int rows;
+    void setupModelData();
+    CategoryItem *rootItem;
 
 };
 
