@@ -20,16 +20,7 @@ Krecipes2View::Krecipes2View(QWidget *parent)
     
     RecipeListModel *model = new RecipeListModel(db, this);
     ui->treeView->setModel(model);
-//     ui->treeView->setHeaderLabel(i18n("Recipe"));
-//     for (auto iter = category_list.begin(); iter != category_list.end(); ++iter)
-//     {
-//         if (std::get<2>(*iter) < 0) {
-//             QTreeWidgetItem *category = new QTreeWidgetItem(ui->treeWidget);
-//             category->setText(0, std::get<1>(*iter));
-//         }
-//     }
-//     QTreeWidgetItem *test2 = new QTreeWidgetItem(test);
-//     test2->setText(0, tr("hallo2"));
+
 }
 
 Krecipes2View::~Krecipes2View()

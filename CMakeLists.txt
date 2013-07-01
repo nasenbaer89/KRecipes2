@@ -30,8 +30,8 @@ set(KF5_LIBRARIES ${KF5_LIB}/libki18n.so
                   ${KF5_LIB}/libkdeui.so
                   ${KF5_LIB}/libXmlGui.so
                   ${KF5_LIB}/libkwidgets.so
+                  ${KF5_LIB}/libKIconThemes.so
                   #${KF5_LIB}/libkguiaddons.so
-                  #${KF5_LIB}/libKIconThemes.so
                   )
 target_link_libraries(krecipes2 ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY}
                                 ${KF5_LIBRARIES}

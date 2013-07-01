@@ -1,7 +1,9 @@
 #include <klocalizedstring.h>
 #include "recipelistmodel.h"
-#include <qlocale.h>
 #include <QDebug>
+#include <QPixmap>
+#include <kiconloader.h>
+
 
 RecipeListModel::RecipeListModel(RecipeDB* db, QObject *parent):QAbstractItemModel(parent)
 {
@@ -71,11 +73,18 @@ QVariant RecipeListModel::data(const QModelIndex& index, int role) const
 {
     if (!index.isValid())
         return QVariant();
-    if (role != Qt::DisplayRole)
-        return QVariant();
-    
-    CategoryItem *category = static_cast<CategoryItem*>(index.internalPointer());
-    return category->name();
+    if (role == Qt::DisplayRole) {
+        CategoryItem *category = static_cast<CategoryItem*>(index.internalPointer());
+        return category->name();
+    }
+    if (role == Qt::DecorationRole) {
+        CategoryItem *category = static_cast<CategoryItem*>(index.internalPointer());
+        if (category->type == CategoryItem::Category) {
+            KIconLoader *il = KIconLoader::global();
+            return il->loadIcon( "folder-yellow", KIconLoader::NoGroup, 16 );
+        }
+    }
+    return QVariant();
 }
 
 QVariant RecipeListModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -96,7 +105,7 @@ Qt::ItemFlags RecipeListModel::flags(const QModelIndex &index) const
     return Qt::ItemIsSelectable |  Qt::ItemIsEditable | Qt::ItemIsEnabled ;
 }
 
-void RecipeListModel::setupModelData()
+void RecipeListModel::setupModelData() //FIXME propably to slow
 {
     for (auto category : category_list)
     {
@@ -107,13 +116,13 @@ void RecipeListModel::setupModelData()
         if ( parent_id == -1) {
             rootItem->appendSubCategory(new CategoryItem(id, name, CategoryItem::Category, rootItem));
         }
-//         else {
-//             for (auto& top_category : rootItem->subCategories) {
-//                 if (top_category->id() == parent_id){
-//                     top_category->appendSubCategory(new CategoryItem(id, name, CategoryItem::Category, top_category));
-//                 }
-//             }
-//         }
+        else {
+            for (auto& top_category : rootItem->subCategories) {
+                if (top_category->id() == parent_id){
+                    top_category->appendSubCategory(new CategoryItem(id, name, CategoryItem::Category, top_category));
+                }
+            }
+        }
     }
     for (auto recipe : recipe_list)
     {
@@ -125,11 +134,11 @@ void RecipeListModel::setupModelData()
                 top_category->appendRecipe(new CategoryItem(id, name, CategoryItem::Recipe, top_category));
                 qDebug() << "Recipe_id:" << id << "category_id:" << category_id << "children:" << top_category->childCount();
             }
-//             for (auto& sub_category : top_category->subCategories) {
-//                 if (sub_category->id() == category_id){
-//                     sub_category->appendRecipe(new CategoryItem(id, name, CategoryItem::Recipe, sub_category));
-//                 }
-//             }
+            for (auto& sub_category : top_category->subCategories) {
+                if (sub_category->id() == category_id){
+                    sub_category->appendRecipe(new CategoryItem(id, name, CategoryItem::Recipe, sub_category));
+                }
+            }
         }
     }
 }
