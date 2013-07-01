@@ -29,6 +29,8 @@ public:
     virtual void createTable(const QString &tableName = "all");
 
     virtual std::vector< std::tuple<int, QString, int> > getCategories();
+    virtual std::vector< std::tuple<int, QString, int> > getRecipes();
+
     
     virtual int maxAuthorNameLength() const;
     virtual int maxCategoryNameLength() const;

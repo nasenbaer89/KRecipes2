@@ -6,7 +6,8 @@
 RecipeListModel::RecipeListModel(RecipeDB* db, QObject *parent):QAbstractItemModel(parent)
 {
     category_list = db->getCategories();
-    rootItem = new CategoryItem(0, i18n("Recipe"));
+    recipe_list = db->getRecipes();
+    rootItem = new CategoryItem(0, i18n("Recipe"), CategoryItem::Category);
     setupModelData();
 }
 
@@ -104,14 +105,31 @@ void RecipeListModel::setupModelData()
         int parent_id = std::get<2>(category);
         
         if ( parent_id == -1) {
-            rootItem->appendChild(new CategoryItem(id, name, rootItem));
+            rootItem->appendSubCategory(new CategoryItem(id, name, CategoryItem::Category, rootItem));
         }
-        else {
-            for (auto& top_category : rootItem->childItems) {
-                if (top_category->id() == parent_id){
-                    top_category->appendChild(new CategoryItem(id, name, top_category));
-                }
+//         else {
+//             for (auto& top_category : rootItem->subCategories) {
+//                 if (top_category->id() == parent_id){
+//                     top_category->appendSubCategory(new CategoryItem(id, name, CategoryItem::Category, top_category));
+//                 }
+//             }
+//         }
+    }
+    for (auto recipe : recipe_list)
+    {
+        int id = std::get<0>(recipe);
+        QString name = std::get<1>(recipe);
+        int category_id = std::get<2>(recipe);
+        for (auto& top_category : rootItem->subCategories) {
+            if (top_category->id() == category_id){
+                top_category->appendRecipe(new CategoryItem(id, name, CategoryItem::Recipe, top_category));
+                qDebug() << "Recipe_id:" << id << "category_id:" << category_id << "children:" << top_category->childCount();
             }
+//             for (auto& sub_category : top_category->subCategories) {
+//                 if (sub_category->id() == category_id){
+//                     sub_category->appendRecipe(new CategoryItem(id, name, CategoryItem::Recipe, sub_category));
+//                 }
+//             }
         }
     }
 }

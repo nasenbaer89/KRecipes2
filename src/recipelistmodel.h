@@ -24,6 +24,7 @@ public:
     
 private:
     std::vector< std::tuple<int, QString, int> > category_list;
+    std::vector< std::tuple<int, QString, int> > recipe_list;
     void setupModelData();
     CategoryItem *rootItem;
 

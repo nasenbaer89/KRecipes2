@@ -148,6 +148,28 @@ std::vector< std::tuple<int, QString, int> > LiteRecipeDB::getCategories()
     return category_list;
 }
 
+std::vector< std::tuple< int, QString, int > > LiteRecipeDB::getRecipes()
+{
+    QString command = "SELECT id, title, category_id FROM recipes order by category_id asc";
+    QSqlQuery query(command, *database);
+    if (query.lastError().type() != QSqlError::NoError) {
+        qDebug() << query.lastError();
+        return std::vector< std::tuple<int, QString, int> >();
+    }
+    std::vector< std::tuple<int, QString, int> > recipe_list;
+    if (query.isActive() && query.isSelect())
+    {
+        while(query.next())
+        {
+            recipe_list.push_back(std::make_tuple<int, QString, int>(query.value(0).toInt(),
+                                                                       query.value(1).toString(),
+                                                                       query.value(2).toInt()));
+        }
+    }
+    return recipe_list;
+}
+
+
 void LiteRecipeDB::portOldDatabases(float version)
 {//TODO switch(), make version integer
     qDebug() << "porting...";

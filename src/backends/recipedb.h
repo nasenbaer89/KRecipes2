@@ -50,6 +50,7 @@ public:
     RecipeDB::Error checkIntegrity();
 
     virtual std::vector< std::tuple<int, QString, int> > getCategories() = 0;
+    virtual std::vector< std::tuple<int, QString, int> > getRecipes() = 0;
     
 protected:
     double latestDBVersion() const;
