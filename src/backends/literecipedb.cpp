@@ -55,7 +55,7 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "ingredient_list") || (tableName == "all")) { //FIXME what does this table do?
         commands << "CREATE TABLE ingredient_list (id INT NOT NULL primary key, recipe_id INT, ingredient_id INT,"
-                 " amount FLOAT, amount_offset FLOAT, unit_id INT, order_index INT, group_id INT, substitute_for INT);"
+                    " amount FLOAT, amount_offset FLOAT, unit_id INT, order_index INT, group_id INT, substitute_for INT);"
                  << "CREATE index ridil_index ON ingredient_list(recipe_id);" // FIXME what are the indexes doing?
                  << "CREATE index iidil_index ON ingredient_list(ingredient_id);"
                  << "CREATE index gidil_index ON ingredient_list(group_id);";
@@ -66,7 +66,7 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "ingredient_weights") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE ingredient_weights (id INT NOT NULL primary key, ingredient_id INT NOT NULL,"
-                 " amount FLOAT, unit_id INT, weight FLOAT, weight_unit_id INT, prep_method_id INT);"
+                    " amount FLOAT, unit_id INT, weight FLOAT, weight_unit_id INT, prep_method_id INT);"
                  << "CREATE index weight_wid_index ON ingredient_weights(weight_unit_id)"
                  << "CREATE index weight_pid_index ON ingredient_weights(prep_method_id)"
                  << "CREATE index weight_uid_index ON ingredient_weights(unit_id)"
@@ -78,13 +78,13 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "prep_method_list") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE prep_method_list (ingredient_list_id INT NOT NULL, prep_method_id INT NOT NULL,"
-                 "order_index INTEGER );"
+                    "order_index INTEGER );"
                  << "CREATE index iid_index ON prep_method_list(ingredient_list_id);"
                  << "CREATE index pid_index ON prep_method_list(prep_method_id);";
     }
     if ((tableName == "ratings") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE ratings (id INT NOT NULL primary key, recipe_id int(11) NOT NULL, comment TEXT,"
-                 " rater TEXT, created TIMESTAMP);";
+                    " rater TEXT, created TIMESTAMP);";
     }
     if ((tableName == "rating_criteria") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE rating_criteria (id INT NOT NULL primary key, name TEXT);";
