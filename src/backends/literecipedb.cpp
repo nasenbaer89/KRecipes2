@@ -30,7 +30,7 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
 
     if ((tableName == "authors") || (tableName == "all")) {
         commands << QString("create table authors (id int NOT NULL primary key, name varchar(%1) default NULL)")
-                 .arg(maxAuthorNameLength());
+                    .arg(maxAuthorNameLength());
     }
     if ((tableName == "categories") || (tableName == "all")) {
         commands << QString("create table categories (id int NOT NULL primary key, name varchar(%1) default NULL,"
@@ -40,22 +40,22 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     if ((tableName == "db_info") || (tableName == "all")) {
         commands << ("create table db_info (ver FLOAT NOT NULL,generated_by varchar(200) default NULL)");
         commands << QString("insert into db_info values(%1, 'Krecipes2 %2')")
-                 .arg(latestDBVersion()).arg(krecipes_version());
+                    .arg(latestDBVersion()).arg(krecipes_version());
     }
     if ((tableName == "ingredients") || (tableName == "all")) {
         commands << QString("create table ingredients (id int not null primary key, name varchar(%1));")
-                 .arg(maxIngredientNameLength());
+                    .arg(maxIngredientNameLength());
     }
     if ((tableName == "ingredient_info") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE ingredient_info (ingredient_id INT, property_id INT, amount FLOAT, per_units INTEGER);";
     }
     if ((tableName == "ingredient_groups") || (tableName == "all")) {//FIXME
         commands << QString("CREATE TABLE ingredient_groups (id INT NOT NULL primary key, name varchar(%1));")
-                 .arg(maxIngGroupNameLength());
+                    .arg(maxIngGroupNameLength());
     }
     if ((tableName == "ingredient_list") || (tableName == "all")) { //FIXME what does this table do?
         commands << "CREATE TABLE ingredient_list (id INT NOT NULL primary key, recipe_id INT, ingredient_id INT,"
-                 " amount FLOAT, amount_offset FLOAT, unit_id INT, order_index INT, group_id INT, substitute_for INT);"
+                    " amount FLOAT, amount_offset FLOAT, unit_id INT, order_index INT, group_id INT, substitute_for INT);"
                  << "CREATE index ridil_index ON ingredient_list(recipe_id);" // FIXME what are the indexes doing?
                  << "CREATE index iidil_index ON ingredient_list(ingredient_id);"
                  << "CREATE index gidil_index ON ingredient_list(group_id);";
@@ -66,7 +66,7 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "ingredient_weights") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE ingredient_weights (id INT NOT NULL primary key, ingredient_id INT NOT NULL,"
-                 " amount FLOAT, unit_id INT, weight FLOAT, weight_unit_id INT, prep_method_id INT);"
+                    " amount FLOAT, unit_id INT, weight FLOAT, weight_unit_id INT, prep_method_id INT);"
                  << "CREATE index weight_wid_index ON ingredient_weights(weight_unit_id)"
                  << "CREATE index weight_pid_index ON ingredient_weights(prep_method_id)"
                  << "CREATE index weight_uid_index ON ingredient_weights(unit_id)"
@@ -74,17 +74,17 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "prep_methods") || (tableName == "all")) {
         commands << QString("CREATE TABLE prep_methods (id INT NOT NULL primary key, name VARCHAR(%1));")
-                 .arg(maxPrepMethodNameLength());
+                    .arg(maxPrepMethodNameLength());
     }
     if ((tableName == "prep_method_list") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE prep_method_list (ingredient_list_id INT NOT NULL, prep_method_id INT NOT NULL,"
-                 "order_index INTEGER );"
+                    "order_index INTEGER );"
                  << "CREATE index iid_index ON prep_method_list(ingredient_list_id);"
                  << "CREATE index pid_index ON prep_method_list(prep_method_id);";
     }
     if ((tableName == "ratings") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE ratings (id INT NOT NULL primary key, recipe_id int(11) NOT NULL, comment TEXT,"
-                 " rater TEXT, created TIMESTAMP);";
+                    " rater TEXT, created TIMESTAMP);";
     }
     if ((tableName == "rating_criteria") || (tableName == "all")) { //FIXME
         commands << "CREATE TABLE rating_criteria (id INT NOT NULL primary key, name TEXT);";
@@ -96,18 +96,18 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
         commands << QString("create table recipes (id int not null primary key, title varchar(%1), author_id int,"
                             " category_id int, yield_amount float, yield_type_id int, instructions TEXT,"
                             " photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP);")
-                 .arg(maxRecipeTitleLength());
+                    .arg(maxRecipeTitleLength());
     }
     if (tableName == "recipes_copy") {
         commands << QString("create table recipes_copy(id int not null primary key, title varchar(%1),"
                             " author_id int,  yield_amount float, yield_type_id int, instructions TEXT,"
                             " photo BLOB, prep_time TIME, ctime TIMESTAMP, mtime TIMESTAMP, atime TIMESTAMP)")
-                 .arg(maxRecipeTitleLength());
+                    .arg(maxRecipeTitleLength());
     }
     if ((tableName == "units") || (tableName == "all")) {
         commands << QString("CREATE TABLE units (id INT NOT NULL primary key, name VARCHAR(%1), name_abbrev VARCHAR(%2),"
                             " plural VARCHAR(%3), plural_abbrev VARCHAR(%4), type INT NOT NULL DEFAULT '0');")
-                 .arg(maxUnitNameLength()).arg(maxUnitNameLength()).arg(maxUnitNameLength()).arg(maxUnitNameLength());
+                    .arg(maxUnitNameLength()).arg(maxUnitNameLength()).arg(maxUnitNameLength()).arg(maxUnitNameLength());
     }
     if ((tableName == "units_conversion") || (tableName == "all")) {//FIXME
         commands << "CREATE TABLE units_conversion (unit1_id INT, unit2_id INT, ratio FLOAT);";
@@ -117,7 +117,7 @@ void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes ar
     }
     if ((tableName == "yield_types") || (tableName == "all")) {
         commands << QString("CREATE TABLE yield_types (id int NOT NULL primary key, name varchar(%1))")
-                 .arg(maxYieldTypeLength());
+                    .arg(maxYieldTypeLength());
     }
     // execute the queries
     for (QStringList::const_iterator it = commands.constBegin(); it != commands.constEnd(); ++it) {
@@ -139,8 +139,8 @@ std::vector< std::tuple<int, QString, int> > LiteRecipeDB::getCategories()
     if (query.isActive() && query.isSelect()) {
         while (query.next()) {
             category_list.push_back(std::make_tuple<int, QString, int>(query.value(0).toInt(),
-                                    query.value(1).toString(),
-                                    query.value(2).toInt()));
+                                                                       query.value(1).toString(),
+                                                                       query.value(2).toInt()));
         }
     }
     return category_list;
@@ -158,8 +158,8 @@ std::vector< std::tuple< int, QString, int > > LiteRecipeDB::getRecipes()
     if (query.isActive() && query.isSelect()) {
         while (query.next()) {
             recipe_list.push_back(std::make_tuple<int, QString, int>(query.value(0).toInt(),
-                                  query.value(1).toString(),
-                                  query.value(2).toInt()));
+                                                                     query.value(1).toString(),
+                                                                     query.value(2).toInt()));
         }
     }
     return recipe_list;

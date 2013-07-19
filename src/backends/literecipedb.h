@@ -44,9 +44,7 @@ public:
 
 private:
     virtual void portOldDatabases(float version); //TODO does not import older than recent upstream version
-    QString qsqlDriverPlugin() const {
-        return SQLITE_DRIVER;
-    }
+    QString qsqlDriverPlugin() const {return SQLITE_DRIVER;}
 //     virtual QStringList backupCommand() const; //TODO
 //     virtual QStringList restoreCommand() const; //TODO
 //     virtual void storePhoto( int recipeID, const QByteArray &data ); //TODO
