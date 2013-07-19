@@ -13,6 +13,8 @@
 
 Krecipes2::Krecipes2(QWidget *parent) : KXmlGuiWindow(parent)
 {
+    qApp->setQuitOnLastWindowClosed(true); //FIXME why is this necessary?
+    
     m_view = new Krecipes2View( this );
     setObjectName( "Krecipes2" );
     // accept dnd
