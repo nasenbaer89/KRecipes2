@@ -11,7 +11,7 @@
 ***************************************************************************/
 
 #ifndef LITERECIPEDB_H
-#define LITERECIPEDB_H 
+#define LITERECIPEDB_H
 
 #include <tuple>
 #include "recipedb.h"
@@ -21,17 +21,17 @@
 class LiteRecipeDB : public RecipeDB
 {
     Q_OBJECT
-    
+
 public:
     LiteRecipeDB(const QString &DBName = DEFAULT_DB_NAME);
     ~LiteRecipeDB(void);
-    
+
     virtual void createTable(const QString &tableName = "all");
 
     virtual std::vector< std::tuple<int, QString, int> > getCategories();
     virtual std::vector< std::tuple<int, QString, int> > getRecipes();
 
-    
+
     virtual int maxAuthorNameLength() const;
     virtual int maxCategoryNameLength() const;
     virtual int maxIngredientNameLength() const;
@@ -41,14 +41,16 @@ public:
     virtual int maxPrepMethodNameLength() const;
     virtual int maxPropertyNameLength() const;
     virtual int maxYieldTypeLength() const;
-    
-    private:
+
+private:
     virtual void portOldDatabases(float version); //TODO does not import older than recent upstream version
-    QString qsqlDriverPlugin() const { return SQLITE_DRIVER; }
+    QString qsqlDriverPlugin() const {
+        return SQLITE_DRIVER;
+    }
 //     virtual QStringList backupCommand() const; //TODO
 //     virtual QStringList restoreCommand() const; //TODO
 //     virtual void storePhoto( int recipeID, const QByteArray &data ); //TODO
-    
+
     //FIXME what are those funtions for?
 //     protected:
 //     QString escapeAndEncode( const QString &s ) const;

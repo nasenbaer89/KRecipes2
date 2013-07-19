@@ -17,7 +17,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
                          // Optional text shown in the About box.
                          // Can contain any information desired.
                          i18n("This product is RecipeML compatible.\nYou can get more information about this file"
-                         "format in:\nhttp://www.formatdata.com/recipeml"),
+                              "format in:\nhttp://www.formatdata.com/recipeml"),
                          "http://example.com/",     //homePageAddress
                          "submit@bugs.kde.org");    //bugsEmailAddress
 
@@ -32,7 +32,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 //     QQuickView viewer;
 //     viewer.setSource(QUrl("../src/qml/main.qml"));
 //     viewer.show();
-// 
+//
 //     QObject::connect(viewer.engine(), SIGNAL(quit()), qApp, SLOT(quit()));
     return app.exec();
 }

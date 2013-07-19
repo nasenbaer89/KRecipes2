@@ -11,13 +11,13 @@
 
 Krecipes2View::Krecipes2View(QWidget *parent)
 {
-    
+
     ui = new Ui::Krecipes2View;
-    ui->setupUi ( this );
-    
+    ui->setupUi(this);
+
     RecipeDB* db = RecipeDB::createDatabase("SQLite");
     db->connect();
-    
+
     RecipeListModel *model = new RecipeListModel(db, this);
     ui->treeView->setModel(model);
 
