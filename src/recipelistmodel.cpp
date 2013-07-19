@@ -3,7 +3,7 @@
 #include <qlocale.h>
 #include <QDebug>
 
-RecipeListModel::RecipeListModel(RecipeDB* db, QObject *parent):QAbstractItemModel(parent)
+RecipeListModel::RecipeListModel(RecipeDB* db, QObject *parent): QAbstractItemModel(parent)
 {
     category_list = db->getCategories();
     rootItem = new CategoryItem(0, i18n("Recipe"));
@@ -72,18 +72,18 @@ QVariant RecipeListModel::data(const QModelIndex& index, int role) const
         return QVariant();
     if (role != Qt::DisplayRole)
         return QVariant();
-    
+
     CategoryItem *category = static_cast<CategoryItem*>(index.internalPointer());
     return category->name();
 }
 
 QVariant RecipeListModel::headerData(int section, Qt::Orientation orientation, int role) const
- {
+{
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
         return rootItem->name();
 
     return QVariant();
- }
+}
 
 Qt::ItemFlags RecipeListModel::flags(const QModelIndex &index) const
 {
@@ -97,18 +97,16 @@ Qt::ItemFlags RecipeListModel::flags(const QModelIndex &index) const
 
 void RecipeListModel::setupModelData()
 {
-    for (auto category : category_list)
-    {
+    for (auto category : category_list) {
         int id = std::get<0>(category);
         QString name = std::get<1>(category);
         int parent_id = std::get<2>(category);
-        
-        if ( parent_id == -1) {
+
+        if (parent_id == -1) {
             rootItem->appendChild(new CategoryItem(id, name, rootItem));
-        }
-        else {
-            for (auto& top_category : rootItem->childItems) {
-                if (top_category->id() == parent_id){
+        } else {
+            for (auto & top_category : rootItem->childItems) {
+                if (top_category->id() == parent_id) {
                     top_category->appendChild(new CategoryItem(id, name, top_category));
                 }
             }
