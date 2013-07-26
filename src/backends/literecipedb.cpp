@@ -19,7 +19,7 @@
 
 LiteRecipeDB::LiteRecipeDB(const QString &_dbFile) : RecipeDB()
 {
-    qDebug();
+//     qDebug();
 }
 
 void LiteRecipeDB::createTable(const QString &tableName) //FIXME auto indexes are created

@@ -1,12 +1,11 @@
 #include "categoryitem.h"
-#include <QDebug>
 
 CategoryItem::CategoryItem(const int id_, const QString name_, Type type_, CategoryItem *parent)
 {
     Id = id_;
     Name = name_;
-    parentItem = parent;
     type = type_;
+    parentItem = parent;
 }
 
 CategoryItem::~CategoryItem()
