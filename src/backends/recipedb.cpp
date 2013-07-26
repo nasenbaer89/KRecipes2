@@ -1,5 +1,6 @@
-#include "recipedb.h"
+// #include "recipedb.h"
 #include "literecipedb.h"
+#include <klocalizedstring.h>
 
 #include <QDebug>
 #include <QSqlDatabase>
@@ -7,7 +8,6 @@
 #include <QSqlError>
 #include <QString>
 #include <QStringList>
-#include <iostream>
 #include <QMessageBox>
 
 RecipeDB::RecipeDB() : QObject(), connectionName(QString("krecipes"))  //FIXME not unique
@@ -53,7 +53,7 @@ RecipeDB::Error RecipeDB::connect(const QString &host, const QString &user, cons
     }
 
     if (!driver_found) {
-        std::cout << "The Qt database plugin " << qPrintable(qsqlDriverPlugin()) << " is not installed.  This plugin is required for using this database backend." << std::endl;
+        qDebug() << i18n("The Qt database plugin '%1' is not installed.  This plugin is required for using this database backend.", qsqlDriverPlugin()); //FIXME should be shown to the user
         return NoDriverFound;
     }
 
@@ -86,10 +86,10 @@ RecipeDB::Error RecipeDB::connect(const QString &host, const QString &user, cons
 
     Error integr_err = checkIntegrity();
     if (integr_err == NewerDbVersion) {
-        std::cout << "This database was created with a newer version of Krecipes and cannot be opened." << std::endl;
+        qDebug() << i18n("This database was created with a newer version of Krecipes and cannot be opened."); //FIXME should be shown to the user
         return NewerDbVersion;
     } else if (integr_err == FixDbFailed) {
-        std::cout << "Failed to fix database structure." << std::endl;
+        qDebug() << i18n("Failed to fix database structure."); //FIXME should be shown to the user
         return FixDbFailed;
     }
 
