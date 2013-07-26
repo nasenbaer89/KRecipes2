@@ -20,7 +20,7 @@ RecipeDB::~RecipeDB()
 
 RecipeDB* RecipeDB::createDatabase(const QString &dbType, const QString &file)
 {
-    qDebug();
+//     qDebug();
     RecipeDB * database = 0;
 
     if (dbType == "SQLite") {
@@ -28,15 +28,15 @@ RecipeDB* RecipeDB::createDatabase(const QString &dbType, const QString &file)
     } else {
         qDebug() << "No database support included (or available) for the " << dbType << " database." ;
     }
-    qDebug() << "database :" << database;
+//     qDebug() << "database :" << database;
     return database;
 }
 
 RecipeDB::Error RecipeDB::connect(const QString &host, const QString &user, const QString &pass, const QString &DBName, int port)
 {
-    qDebug();
+//     qDebug();
     qDebug() << "QSqlRecipeDB: Opening Database..." ;
-    qDebug() << "Parameters: \n\thost: " << host << "\n\tuser: " << user << "\n\tDBName: " << DBName ;
+    qDebug() << "Parameters: \thost: " << host << "\tuser: " << user << "\tDBName: " << DBName ;
 
 
     //we need to have a unique connection name for each QSqlRecipeDB class as multiple db's may be open at once (db to db transfer)
@@ -58,7 +58,7 @@ RecipeDB::Error RecipeDB::connect(const QString &host, const QString &user, cons
     }
 
     if (!qsqlDriverPlugin().isEmpty()) {
-        qDebug() << " qsqlDriverPlugin() :" << qsqlDriverPlugin() << " connectionName :" << connectionName;
+//         qDebug() << "qsqlDriverPlugin() :" << qsqlDriverPlugin() << " connectionName :" << connectionName;
         database = new QSqlDatabase;
         *database = QSqlDatabase::addDatabase(qsqlDriverPlugin(), connectionName);
     }
@@ -117,14 +117,14 @@ QString RecipeDB::krecipes_version() const
 
 float RecipeDB::databaseVersion() //FIXME this should go into literecipedb?
 {
-    qDebug();
+//     qDebug();
     QString command = "SELECT ver FROM db_info";
     QSqlQuery dbVersion(command, *database);
     if (dbVersion.lastError().type() != QSqlError::NoError) {
         qDebug() << dbVersion.lastError();
     }
     if (dbVersion.isActive() && dbVersion.isSelect() && dbVersion.next()) {
-        qDebug() << "dbVersion.value(0).toString().toDouble() :" << dbVersion.value(0).toString().toDouble();
+//         qDebug() << "dbVersion.value(0).toString().toDouble() :" << dbVersion.value(0).toString().toDouble();
         return (dbVersion.value(0).toString().toDouble());   // There should be only one (or none for old DB) element, so go to first
     } else {
         qDebug() << " old version";
@@ -134,7 +134,7 @@ float RecipeDB::databaseVersion() //FIXME this should go into literecipedb?
 
 RecipeDB::Error RecipeDB::checkIntegrity()
 {
-    qDebug();
+//     qDebug();
     QStringList existingTableList = database->tables();
     if (existingTableList.isEmpty()) {
         createTable();
@@ -150,7 +150,7 @@ RecipeDB::Error RecipeDB::checkIntegrity()
     }
 
     // Check for older versions, and port
-    qDebug();
+//     qDebug();
     qDebug() << "version found... " << version;
     qDebug() << "latest version... " << latest_version;
     if (int(qRound(version * 1e5)) < int(qRound(latest_version * 1e5))) {           //correct for float's imprecision

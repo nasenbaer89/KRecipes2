@@ -1,6 +1,7 @@
 #include <klocalizedstring.h>
 #include <QTreeWidgetItem>
 #include <tuple>
+#include <QDebug>
 
 #include "backends/recipedb.h"
 
@@ -11,7 +12,6 @@
 
 Krecipes2View::Krecipes2View(QWidget *parent)
 {
-
     ui = new Ui::Krecipes2View;
     ui->setupUi(this);
 
